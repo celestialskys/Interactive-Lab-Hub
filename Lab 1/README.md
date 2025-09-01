@@ -193,25 +193,25 @@ _Goals:_ Pople sometimes do not realize when the environment's airquality has dr
 
 **Moodlight**
 
-![alt Moodlight](Storyboards\Moodie(1).jpg)
-![alt Moodlight](Storyboards\Moodie(2).jpg)
-![alt Moodlight](Storyboards\Moodie(3).jpg)
-![alt Moodlight](Storyboards\Moodie(4).jpg)
-![alt Moodlight](Storyboards\Moodie(5).jpg)
-![alt Moodlight](Storyboards\Moodie(6).jpg)
-![alt Moodlight](Storyboards\Moodie(7).jpg)
-![alt Moodlight](Storyboards\Moodie(8).jpg)
-![alt Moodlight](Storyboards\Moodie(9).jpg)
+![alt Moodlight](Storyboards/Moodie(1).jpg)
+![alt Moodlight](Storyboards/Moodie(2).jpg)
+![alt Moodlight](Storyboards/Moodie(3).jpg)
+![alt Moodlight](Storyboards/Moodie(4).jpg)
+![alt Moodlight](Storyboards/Moodie(5).jpg)
+![alt Moodlight](Storyboards/Moodie(6).jpg)
+![alt Moodlight](Storyboards/Moodie(7).jpg)
+![alt Moodlight](Storyboards/Moodie(8).jpg)
+![alt Moodlight](Storyboards/Moodie(9).jpg)
 
 
 **AirQuality Detector**
-![alt AirQuality Detector](Storyboards\AirQ1(1).jpg) 
-![alt AirQuality Detector](Storyboards\AirQ1(2).jpg) 
-![alt AirQuality Detector](Storyboards\AirQ1(3).jpg) 
-![alt AirQuality Detector](Storyboards\AirQ1(4).jpg) 
-![alt AirQuality Detector](Storyboards\AirQ1(5).jpg) 
-![alt AirQuality Detector](Storyboards\AirQ1(6).jpg) 
-![alt AirQuality Detector](Storyboards\AirQ1(7).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(1).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(2).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(3).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(4).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(5).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(6).jpg) 
+![alt AirQuality Detector](Storyboards/AirQ1(7).jpg) 
 <!-- Present your ideas to the other people in your breakout room (or in small groups). You can just get feedback from one another or you can work together on the other parts of the lab. -->
 
 **Feedback**
