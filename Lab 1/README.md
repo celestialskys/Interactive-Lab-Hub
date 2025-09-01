@@ -158,8 +158,6 @@ _Goals:_ Pople sometimes do not realize when the environment's airquality has dr
 
 <img src="Lab 1\Storyboards\Moodie(1).jpg">
 <img src="Lab 1\Storyboards\Moodie(2).jpg">
-<img src="Lab 1\Storyboards\Moodie(3).jpg">
-<img src="Lab 1\Storyboards\Moodie(4).jpg">
 <img src="Lab 1\Storyboards\Moodie(5).jpg">
 <img src="Lab 1\Storyboards\Moodie(6).jpg">
 <img src="Lab 1\Storyboards\Moodie(7).jpg">
@@ -195,8 +193,6 @@ _Goals:_ Pople sometimes do not realize when the environment's airquality has dr
 
 ![alt Moodlight](Storyboards/Moodie(1).jpg)
 ![alt Moodlight](Storyboards/Moodie(2).jpg)
-![alt Moodlight](Storyboards/Moodie(3).jpg)
-![alt Moodlight](Storyboards/Moodie(4).jpg)
 ![alt Moodlight](Storyboards/Moodie(5).jpg)
 ![alt Moodlight](Storyboards/Moodie(6).jpg)
 ![alt Moodlight](Storyboards/Moodie(7).jpg)
