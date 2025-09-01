@@ -2,7 +2,7 @@
 
 # Staging Interaction
 
-\*\***NAME OF COLLABORATOR HERE**\*\*
+\*\*Nana Takada\*\*
 
 In the original stage production of Peter Pan, Tinker Bell was represented by a darting light created by a small handheld mirror off-stage, reflecting a little circle of light from a powerful lamp. Tinkerbell communicates her presence through this light to the other characters. See more info [here](https://en.wikipedia.org/wiki/Tinker_Bell). 
 
@@ -74,7 +74,30 @@ The interactive device can be anything *except* a computer, a tablet computer or
 
 \*\***Describe your setting, players, activity and goals here.**\*\*
 
-Storyboards are a tool for visually exploring a users interaction with a device. They are a fast and cheap method to understand user flow, and iterate on a design before attempting to build on it. Take some time to read through this explanation of [storyboarding in UX design](https://www.smashingmagazine.com/2017/10/storyboarding-ux-design/). Sketch seven storyboards of the interactions you are planning. **It does not need to be perfect**, but must get across the behavior of the interactive device and the other characters in the scene. 
+MoodLight
+    Setting:
+        Inside the homes of our characters, including our main character, friends and family. 
+    Players:
+        Individuals who want to communicate their moods. Individuals who will set the color to indicate their feelings.
+
+    Activity: 
+        When the user wants to share their mood with another they can add their friends/family member and alert them of their mood via light signal. Prompting the receiever to reach out.
+    Goals:
+        Some may want to share how they are feeling with others during a mental health episode, positive occasion or celebration. 
+
+Oxygen Detector
+Players:
+
+    Individuals or groups at home.
+Other people present a space.
+
+ctivity: The device monitors airquality in a room.
+
+If the air quality exceeds a set threshold, the device alerts the room by changing its light (e.g., changing glow from green to orange or red plus possible pulsing).
+This can prompt someone in the room to turn on a fan or open the windows/doors. 
+
+Goals: Pople sometimes do not realize when the environment's airquality has dropped. The goal of the device is to use lighting as a clear alert to prompt someone—either the resident or others—to take action and get air flowing in the room.
+
 
 \*\***Include pictures of your storyboards here**\*\*
 
