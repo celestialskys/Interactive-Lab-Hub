@@ -157,8 +157,9 @@ You can look in `screen_boot_script.py` for how to display text on the screen!
 #### Displaying an image
 
 You can look in `image.py` for an example of how to display an image on the screen. Can you make it switch to another image when you push one of the buttons?
-
-
+Testing images display
+['video1'](https://drive.google.com/file/d/1glOhrOCqqhjFHUn5AiuE0XEJ7p8Lkbe-/view?usp=drive_link)
+['video2'](https://drive.google.com/file/d/1CDV8y8k3iZrRhe_GPk2RUdZifR1Oxwc5/view?usp=drive_link)
 
 ## Part D. 
 ### Set up the Display Clock Demo
