@@ -1,6 +1,8 @@
 # Interactive Prototyping: The Clock of Pi
 **NAMES OF COLLABORATORS HERE**
 
+Nana Takada (nt388), Lianne Bisch (lb854)
+
 Does it feel like time is moving strangely during this semester?
 
 For our first Pi project, we will pay homage to the [timekeeping devices of old](https://en.wikipedia.org/wiki/History_of_timekeeping_devices) by making simple clocks.
@@ -157,9 +159,8 @@ You can look in `screen_boot_script.py` for how to display text on the screen!
 #### Displaying an image
 
 You can look in `image.py` for an example of how to display an image on the screen. Can you make it switch to another image when you push one of the buttons?
-Testing images display
-['video1'](https://drive.google.com/file/d/1glOhrOCqqhjFHUn5AiuE0XEJ7p8Lkbe-/view?usp=drive_link)
-['video2'](https://drive.google.com/file/d/1CDV8y8k3iZrRhe_GPk2RUdZifR1Oxwc5/view?usp=drive_link)
+
+
 
 ## Part D. 
 ### Set up the Display Clock Demo
@@ -194,10 +195,14 @@ Can you make time interactive? You can look in `screen_test.py` for examples for
 
 Please sketch/diagram your clock idea. (Try using a [Verplank digram](http://www.billverplank.com/IxDSketchBook.pdf)!
 
+<img src="image/diagram.jpg" height="300" />
+
 **We strongly discourage and will reject the results of literal digital or analog clock display.**
 
 
 \*\*\***A copy of your code should be in your Lab 2 Github repo.**\*\*\*
+
+The part1 code is in screen_clock_part1.py.
 
 After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by adding the files here, commiting and pushing.
 
@@ -214,6 +219,9 @@ After that, Git will ask you to login to your GitHub account to push the updates
 ## Make a short video of your modified barebones PiClock
 
 \*\*\***Take a video of your PiClock.**\*\*\*
+
+[video link](https://drive.google.com/file/d/1czePDeVOzNTZ2pZRB3JytRmQpM2qhg5j/view?usp=drive_link)
+
 
 ## Part G. 
 ## Sketch and brainstorm further interactions and features you would like for your clock for Part 2.
@@ -236,4 +244,57 @@ As always, make sure you document contributions and ideas from others explicitly
 
 You are permitted (but not required) to work in groups and share a turn in; you are expected to make equal contribution on any group work you do, and N people's group project should look like N times the work of a single person's lab. What each person did should be explicitly documented. Make sure the page for the group turn in is linked to your Interactive Lab Hub page. 
 
+## Make a short video of your modified barebones PiClock
 
+\*\*\***Take a video of your PiClock.**\*\*\*
+
+[video link](https://drive.google.com/file/d/1czePDeVOzNTZ2pZRB3JytRmQpM2qhg5j/view?usp=drive_link)
+
+Music & Volume Change:
+[Music Volume link](https://drive.google.com/file/d/1qkxTGRjWdE7F0SoBBiX94pVf0yKrqxtB/view?usp=drive_link)
+
+Changing Musicals and Winning with New Winning Music:
+[Winning Music link](https://drive.google.com/file/d/1-S7UC0oqTkPrTbRzU3gmu1pX4ZtCu7Fr/view?usp=drive_link)
+
+Musicals play different music & displays different images if the lottery is open or not:
+- Lion King Lottery is open & Wicked is not:
+- [lk open video link](https://drive.google.com/file/d/18IlOuVOIIrNpbnIepBKwHyolMyOh_N2n/view?usp=drive_link)
+
+- Lion king & Wicked are open:
+- [both open video link] (https://drive.google.com/file/d/1mywDpt9Q_Ud_gNqxgy7D6oFiEhVtutHl/view?usp=drive_link)
+
+\*\*\***A copy of your code should be in your Lab 2 Github repo.**\*\*\*
+
+### What’s in here
+- `screen_clock_part2.py`
+- `screen_curtain.py`
+
+### What `screen_curtain.py` does
+We created four “scenes,” like acts in a show:
+1. **Waiting for lottery to open**  
+2. **Lottery is open**   
+3. **Waiting for show to start**   
+4. **Show time**
+
+#### How it plays out
+- While waiting, you just see the **curtain closed**.  
+- As showtime gets closer, the **curtain slowly opens**. The amount of curtain opens depends on the number of seconds left until the performance starts after the lottery closed. 
+- Once the show starts, the **curtain is fully open** and the stage is revealed.  
+
+<img src="image/part2.jpg" height="400" />
+
+### Why a Curtain?
+Curtains are the perfect metaphor for Broadway Musical!
+- They **build suspense** (everyone knows something magical is about to happen).  
+- They **tell a story** visually (closed = waiting, opening = excitement, open = showtime).   
+
+## Clock with Music
+By managing the musical state and using vlc library we can track which musical has been selected and change the music if the current musical does not the music playing on each cycle. We only change the music if there is a mismatch or we go into the winning state where we stop the currently playing music and change to the victory music. 
+Music was taken from the broadway soundtracks with the countdown music is different than the 
+The most challenging part was getting the double click for volume because we had to time it so that one click to change musicals was not the same as the double click for volume control. The way part 1 was set up was constantly rerendering the images and music could not be repeatedly queued because the song would not continue.
+
+## Who did what
+- **Nana**: Took charge of the core Lab 1 code + added the curtain magic (`screen_curtain.py`).  
+- **Lianne**: Worked on `screen_clock_part2.py`, hooked up the **speaker**, and gave us sound effects (because what’s Broadway without music?).  
+- **Diagram**: We brainstormed together, and **Lianne** sketched it out.  
+- **README**: Co-written, with equal parts code and comedy.  
