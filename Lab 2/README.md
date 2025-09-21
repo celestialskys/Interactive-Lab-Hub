@@ -262,7 +262,7 @@ Musicals play different music & displays different images if the lottery is open
 
 - Lion king & Wicked are open:
 - [both open video link](https://drive.google.com/file/d/1mywDpt9Q_Ud_gNqxgy7D6oFiEhVtutHl/view?usp=drive_link)
-- 
+  
 \*\*\***A copy of your code should be in your Lab 2 Github repo.**\*\*\*
 
 ### What’s in here
