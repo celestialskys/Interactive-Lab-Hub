@@ -188,7 +188,39 @@ Pro Tip: Using tools like [code-server](https://coder.com/docs/code-server/lates
 
 ## Part E. Now moved to Lab2 Part 2.
 
-## Part F. Now moved to Lab2 Part 2.
+Does time have to be linear?  How do you measure a year? [In daylights? In midnights? In cups of coffee?](https://www.youtube.com/watch?v=wsj15wPpjLY)
+
+Can you make time interactive? You can look in `screen_test.py` for examples for how to use the buttons.
+
+Please sketch/diagram your clock idea. (Try using a [Verplank digram](http://www.billverplank.com/IxDSketchBook.pdf)!
+
+<img src="image/diagram.jpg" height="300" />
+
+**We strongly discourage and will reject the results of literal digital or analog clock display.**
+
+
+\*\*\***A copy of your code should be in your Lab 2 Github repo.**\*\*\*
+
+The part1 code is in screen_clock_part1.py.
+
+After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by adding the files here, commiting and pushing.
+
+```
+(venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git add .
+(venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git commit -m 'your commit message here'
+(venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git push
+```
+
+After that, Git will ask you to login to your GitHub account to push the updates online, you will be asked to provide your GitHub user name and password. Remember to use the "Personal Access Tokens" you set up in Part A as the password instead of your account one! Go on your GitHub repo with your laptop, you should be able to see the updated files from your Pi!
+
+
+## Part F. 
+## Make a short video of your modified barebones PiClock
+
+\*\*\***Take a video of your PiClock.**\*\*\*
+
+[video link](https://drive.google.com/file/d/1czePDeVOzNTZ2pZRB3JytRmQpM2qhg5j/view?usp=drive_link)
+
 
 [video link](https://drive.google.com/file/d/1czePDeVOzNTZ2pZRB3JytRmQpM2qhg5j/view?usp=drive_link)
 
@@ -262,8 +294,8 @@ Musicals play different music & displays different images if the lottery is open
 - [lk open video link](https://drive.google.com/file/d/18IlOuVOIIrNpbnIepBKwHyolMyOh_N2n/view?usp=drive_link)
 
 - Lion king & Wicked are open:
-- [both open video link](https://drive.google.com/file/d/1mywDpt9Q_Ud_gNqxgy7D6oFiEhVtutHl/view?usp=drive_link)
-  
+- [both open video link] (https://drive.google.com/file/d/1mywDpt9Q_Ud_gNqxgy7D6oFiEhVtutHl/view?usp=drive_link)
+
 \*\*\***A copy of your code should be in your Lab 2 Github repo.**\*\*\*
 
 ### What’s in here
