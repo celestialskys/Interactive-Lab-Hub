@@ -336,6 +336,9 @@ The phone number will be stored in the phone.txt.
 <img src="image/storyboard_fridge.jpg" height="400">
 <img src="image/storyboard_fridge2.jpg" height="400">
 
+Graph of possible dialogues:
+<img src="image/Fridgely-graph.png" height="400">
+
 \*\***Please describe and document your process.**\*\*
 
 ### Acting out the dialogue
