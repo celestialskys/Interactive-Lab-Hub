@@ -334,6 +334,7 @@ The phone number will be stored in the phone.txt.
 
 <img src="image/diagram.jpg" height="400" />
 <img src="image/storyboard_fridge.jpg" height="400">
+<img src="image/storyboard_fridge2.jpg" height="400">
 
 \*\***Please describe and document your process.**\*\*
 
