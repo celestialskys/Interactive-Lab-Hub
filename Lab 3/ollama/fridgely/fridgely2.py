@@ -10,7 +10,7 @@ Dependencies:
 - pyaudio
 - pyttsx3 or espeak
 """
-from food_images import get_food_image
+from wiki_api import get_food_image
 
 import speech_recognition as sr
 import subprocess
@@ -20,6 +20,9 @@ import time
 import sys
 import threading
 from queue import Queue
+import board
+import busio
+import adafruit_mpr121
 
 # Set UTF-8 encoding for output
 if sys.stdout.encoding != 'UTF-8':
@@ -43,8 +46,9 @@ sys.stderr = sys.__stderr__
 RED = "\033[91m"
 BLUE = "\033[94m"
 RESET = "\033[0m"
+items_names = ["Tomato", "Eggplant","spinash", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter",]
 
-class OllamaVoiceAssistant:
+class Fridgely:
     def __init__(self, model_name="qwen2.5:0.5b-instruct", ollama_url="http://localhost:11434"):
         self.model_name = model_name
         self.ollama_url = ollama_url
@@ -58,7 +62,7 @@ class OllamaVoiceAssistant:
         self.tts_engine = None
         
         try:
-            self.tts_engine = pyttsx3.init(driverName='espeak')
+            self.tts_engine = pyttsx3.init()
             self.tts_engine.setProperty('rate', 150)
             self.tts_engine.setProperty('volume', 0.9)
         
@@ -176,16 +180,43 @@ class OllamaVoiceAssistant:
         except Exception as e:
             return f"Error communicating with Ollama: {e}"
 
+    def touch_pads(self, items):
+        i2c = busio.I2C(board.SCL, board.SDA)
+        mpr121 = adafruit_mpr121.MPR121(i2c)
+        
+        self.speak("Touch the pads to add items. Touch pad 11 when you are finished.")
+        items = [0]*11
+        typed_response = ""
+        while True:
+            for i in range(11): 
+                if mpr121[i].value:
+                    items[i] += 1
+                    print(f"Pad {i} touched!")
+                    self.speak(f"Added one {items_names[i]}")
+                    time.sleep(0.5)
+            if mpr121[11].value:  # Example: if pad 12 is touched, exit
+                print("Response:")
+                self.speak("Finished adding items.")
+                typed_response = "You want to buy "
+                for i in range(11):
+                    if items[i] > 0:
+                        typed_response += f"{items[i]} {items_names[i]}, "
+                break
+            print(typed_response)
+            if typed_response:
+                print(typed_response)
+                self.speak(typed_response)
+     
     def run_conversation(self, touched = False, button_item = ""):
         """Main conversation loop"""
-        print("\nOllama Voice Assistant Started!")
+        print("Fridgely started!")
         print("Say 'hello' to start, 'exit' or 'quit' to stop")
         print("=" * 50)
         
         # System prompt to make the assistant more conversational
-        system_prompt = """You are a sassy voice assistant. Keep your responses concise and conversational, 
-        typically 1-2 sentences. Be witty and sharp. You are running on a Raspberry Pi."""
-        
+        system_prompt = """You are a kitchen fridge voice assistant. Keep your responses concise and conversational, 
+        typically 1-2 sentences. Try to make food puns whenever you can. You are running on a Raspberry Pi."""
+
         self.speak("Hello! I'm Fridgely. How can I help you today?")
         
         while True:
@@ -201,14 +232,14 @@ class OllamaVoiceAssistant:
                 if any(word in user_input for word in ['exit', 'quit', 'bye', 'goodbye']):
                     self.speak("Goodbye! Have a great day!")
                     break
-                
+               
                 # Check for greeting
                 if any(word in user_input for word in ['hello', 'hi', 'hey']):
-                    self.speak("Hello I'm Fridgely, what would you like to do today?")
+                    self.speak("Hello, what can I help you with?")
                     continue
 
                 if any(word in user_input for word in ['add', 'list', 'grocery', 'shopping', 'shop', 'buy', 'shopping list', 'add to shopping list', 'grocery list']):
-                    self.speak("What item would you like to change?")
+                    self.touch_pads(items_names)
                     continue
                 
                 if any(word in user_input for word in ['change favorites', 'change favorite', 'change item']):
@@ -216,10 +247,10 @@ class OllamaVoiceAssistant:
                     continue
 
                 
-                if touched:
-                    run_shopping_list_conversation(self, button_item)
-                    touched = False
-                    button_number = -1
+                # if touched:
+                    # run_shopping_list_conversation(self, button_item)
+                    # touched = False
+                    # button_number = -1
                 
                 # Send to Ollama for processing
                 print("Thinking...", flush=True)
@@ -235,27 +266,27 @@ class OllamaVoiceAssistant:
                 print(f"Unexpected error: {e}")
                 self.speak("Sorry, I encountered an error. Let's try again.")
     
-    def run_shopping_list_conversation(self, item):
-        selected_item = None
-        quantity = None
+    # def run_shopping_list_conversation(self, item):
+    #     selected_item = None
+    #     quantity = None
         
-        """Run a conversation focused on adding items to the shopping list"""
-        self.speak("You've chosen " + button_item + ". How many would you like to add to your shopping list?")
+    #     """Run a conversation focused on adding items to the shopping list"""
+    #     self.speak("You've chosen " + button_item + ". How many would you like to add to your shopping list?")
         
-        try:
-                quantity = int(user_input)
-            except ValueError:
-                # If not a clean int, ask Ollama to extract a number
-                system_prompt_qty = "Extract a number from the user response. If no number, return -1."
-                quantity = int(self.query_ollama(user_input, system_prompt_qty))
+    #     try:
+    #         quantity = int(user_input)
+    #     except ValueError:
+    #         # If not a clean int, ask Ollama to extract a number
+    #         system_prompt_qty = "Extract a number from the user response. If no number, return -1."
+    #         quantity = int(self.query_ollama(user_input, system_prompt_qty))
 
-            if quantity > 0:
-                self.speak(f"Okay, adding {quantity} {selected_item}(s) to your shopping list.")
-                # Add to shopping list logic here
-                shopping_list.append((selected_item, quantity))
-            else:
-                self.speak("Sorry, I didn't catch the quantity. Please say a number.")
-        
+    #     if quantity > 0:
+    #         self.speak(f"Okay, adding {quantity} {selected_item}(s) to your shopping list.")
+    #         # Add to shopping list logic here
+    #         shopping_list.append((selected_item, quantity))
+    #     else:
+    #         self.speak("Sorry, I didn't catch the quantity. Please say a number.")
+ 
 def start_voice_assistant():
     """Main function to run the voice assistant"""
     import argparse
@@ -284,3 +315,27 @@ def start_voice_assistant():
 
 # if __name__ == "__main__":
 #     main()
+
+      
+def main():
+    """Main function to run the voice assistant"""
+    print("Starting Ollama Voice Assistant...")
+    
+    # Check if required dependencies are available
+    try:
+        import speech_recognition
+        import requests
+    except ImportError as e:
+        print(f"Missing dependency: {e}")
+        print("Please install with: pip install speechrecognition requests pyaudio")
+        return
+    
+    # Create and run the assistant
+    try:
+        assistant = Fridgely()
+        assistant.run_conversation()
+    except Exception as e:
+        print(f"Failed to start assistant: {e}")
+
+if __name__ == "__main__":
+    main()
