@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/pi/Documents/Interactive-Lab-Hub/Lab 3/ollama/fridgely/fridgely2.py", line 26, in <module>
+    from PIL import Image, ImageDraw, ImageFont
+ModuleNotFoundError: No module named 'PIL'

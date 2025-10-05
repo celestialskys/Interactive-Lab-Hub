@@ -26,6 +26,7 @@ import busio
 import adafruit_mpr121
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import adafruit_rgb_display.st7789 as st7789
+from pathlib import Path
 
 
 cs_pin = digitalio.DigitalInOut(board.D5) 
@@ -93,12 +94,17 @@ items_names = ["Tomato", "Eggplant","spinach", "cabbage", "asparagus", "Milk", "
 
 def drawImages(image_path, my_text):
     # Load and fit the image to the display size
+    p = Path(image_path).expanduser()
+    if not p.is_file():
+        image_path = "/home/pi/Documents/Interactive-Lab-Hub/Lab 3/ollama/fridgely/images/food.jpg"
     img = Image.open(image_path).convert("RGB")
     img = ImageOps.fit(img, (width, height), Image.LANCZOS)
     dr = ImageDraw.Draw(img)
+    dr.rectangle((0, 0, width, 28), fill=(0, 0, 0))
     dr.text((10, 10), my_text, font=font, fill=(255, 255, 255))
+    drawText(my_text)
+     # Display image.
     disp.image(img, rotation)
-
 
 class Fridgely:
     def __init__(self, model_name="qwen2.5:0.5b-instruct", ollama_url="http://localhost:11434"):
