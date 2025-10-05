@@ -2,6 +2,7 @@
 
 import os, re, requests
 from requests.adapters import HTTPAdapter, Retry
+from urllib.parse import urlparse
 
 UA = "RPi5WikipediaBot/1.0 (xia14@att.net)"
 session = requests.Session()
@@ -163,16 +164,21 @@ def get_food_image(spoken_phrase: str, save_dir="/home/pi/Documents/Interactive-
     if not url:
         print(f"No image found for: {title}")
         return None
-    ext = os.path.splitext(url.split("?")[0])[1].lower()
-    if ext not in GOOD_EXTS: ext = ".jpg"
-    path = os.path.join(save_dir, sanitize_filename(title) + ext)
+    path = create_food_path(spoken_phrase, url, save_dir)
+    print(path)
     if download_image(url, path):
         print(f"[{title}] -> {path}")
         return path
     print("Download failed.")
     return None
 
-# # Example:
-# if __name__ == "__main__":
-#     for food in ["Tomato", "Eggplant","spinash", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter"]:
-#         get_food_image(food)
+def create_food_path(title, url, ext=".jpg", save_dir="/home/pi/Documents/Interactive-Lab-Hub/Lab 3/ollama/fridgely/images"):
+    ext = os.path.splitext(urlparse(url).path)[1].lower()  
+    if ext not in GOOD_EXTS: ext = ".jpg"
+    path = os.path.join(save_dir, sanitize_filename(title.lower()) + ext)
+    return path
+
+# Example:
+if __name__ == "__main__":
+    for food in ["Tomato", "Eggplant","spinach", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter"]:
+        get_food_image(food)

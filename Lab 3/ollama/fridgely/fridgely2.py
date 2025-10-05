@@ -24,7 +24,7 @@ import digitalio
 import board
 import busio
 import adafruit_mpr121
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import adafruit_rgb_display.st7789 as st7789
 
 
@@ -89,13 +89,15 @@ sys.stderr = sys.__stderr__
 RED = "\033[91m"
 BLUE = "\033[94m"
 RESET = "\033[0m"
-items_names = ["Tomato", "Eggplant","spinash", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter",]
+items_names = ["Tomato", "Eggplant","spinach", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter"]
 
-def drawImages(image, my_text):
-    while True:
-        draw.rectangle((0, 0, width, height), outline=0, fill=400)
-        image.paste(image, (0, 0))
-        draw.text((10, top+5), my_text, font=font, fill=(255, 255, 255))
+def drawImages(image_path, my_text):
+    # Load and fit the image to the display size
+    img = Image.open(image_path).convert("RGB")
+    img = ImageOps.fit(img, (width, height), Image.LANCZOS)
+    dr = ImageDraw.Draw(img)
+    dr.text((10, 10), my_text, font=font, fill=(255, 255, 255))
+    disp.image(img, rotation)
 
 
 class Fridgely:
@@ -243,9 +245,9 @@ class Fridgely:
                     items[i] += 1
                     print(f"Pad {i} touched!")
                     print(BLUE + f"Added one {items_names[i]}")
-                    filename = sanitize_filename(items[i]) + ".png"
+                    filename = get_food_path(items_names[i])
                     print(filename)
-                    # drawImages(filename, f"Added one {items_names[i]}")
+                    drawImages(filename, items_names[i])
                     self.speak(f"Added one {items_names[i]}")
                     time.sleep(0.5)
             if mpr121[11].value:  # Example: if pad 12 is touched, exit
@@ -373,6 +375,33 @@ def start_voice_assistant():
 # if __name__ == "__main__":
 #     main()
 
+
+import os, glob
+
+# Make sure this is defined somewhere central
+GOOD_EXTS = [".jpg", ".jpeg", ".png", ".webp"]
+
+def get_food_path(title, save_dir="/home/pi/Documents/Interactive-Lab-Hub/Lab 3/ollama/fridgely/images",
+                  default_ext=".jpg", must_exist=False):
+    base = sanitize_filename(title.lower())
+
+    # 1) Try exact allowed extensions
+    for ext in GOOD_EXTS:
+        cand = os.path.join(save_dir, base + ext)
+        if os.path.isfile(cand):
+            return cand
+
+    # 2) Wildcard fallback (in case other ext slipped in)
+    matches = glob.glob(os.path.join(save_dir, base + ".*"))
+    matches = [m for m in matches if os.path.splitext(m)[1].lower() in GOOD_EXTS]
+    if matches:
+        # if multiple exist, take the newest
+        return max(matches, key=os.path.getmtime)
+
+    # 3) Not found → either return a path you’d save to, or None
+    if must_exist:
+        return "/home/pi/Documents/Interactive-Lab-Hub/Lab 3/ollama/fridgely/images/food.jpg"
+    return os.path.join(save_dir, base + default_ext)
       
 def main():
     """Main function to run the voice assistant"""

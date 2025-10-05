@@ -237,6 +237,6 @@ jack server is not running or cannot be started
 JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
 JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
 Playing WAVE 'stdin' : Signed 16 bit Little Endian, Rate 22050 Hz, Mono
-Aborted by signal Interrupt...
-aplay: pcm_write:2127: write error: Interrupted system call
+Playing WAVE 'stdin' : Signed 16 bit Little Endian, Rate 22050 Hz, Mono
+Playing WAVE 'stdin' : Signed 16 bit Little Endian, Rate 22050 Hz, Mono
 Playing WAVE 'stdin' : Signed 16 bit Little Endian, Rate 22050 Hz, Mono
