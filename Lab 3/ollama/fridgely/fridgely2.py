@@ -10,7 +10,7 @@ Dependencies:
 - pyaudio
 - pyttsx3 or espeak
 """
-from wiki_api import get_food_image
+from wiki_api import get_food_image, sanitize_filename
 
 import speech_recognition as sr
 import subprocess
@@ -20,9 +20,52 @@ import time
 import sys
 import threading
 from queue import Queue
+import digitalio
 import board
 import busio
 import adafruit_mpr121
+from PIL import Image, ImageDraw, ImageFont
+import adafruit_rgb_display.st7789 as st7789
+
+
+cs_pin = digitalio.DigitalInOut(board.D5) 
+dc_pin = digitalio.DigitalInOut(board.D25)
+reset_pin = None
+
+BAUDRATE = 64000000
+
+spi = board.SPI()
+
+BAUDRATE = 64000000
+disp = st7789.ST7789(
+    spi,
+    cs=cs_pin,
+    dc=dc_pin,
+    rst=reset_pin,
+    baudrate=BAUDRATE,
+    width=135,
+    height=240,
+    x_offset=53,
+    y_offset=40,
+)
+height = disp.width  # we swap height/width to rotate it to landscape!
+width = disp.height
+image = Image.new("RGB", (width, height))
+rotation = 90
+
+draw = ImageDraw.Draw(image)
+draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
+disp.image(image, rotation)
+padding = -2
+top = padding
+bottom = height - padding
+x = 0
+font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
+
+# Turn on the backlight
+backlight = digitalio.DigitalInOut(board.D22)
+backlight.switch_to_output()
+backlight.value = True
 
 # Set UTF-8 encoding for output
 if sys.stdout.encoding != 'UTF-8':
@@ -47,6 +90,13 @@ RED = "\033[91m"
 BLUE = "\033[94m"
 RESET = "\033[0m"
 items_names = ["Tomato", "Eggplant","spinash", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter",]
+
+def drawImages(image, my_text):
+    while True:
+        draw.rectangle((0, 0, width, height), outline=0, fill=400)
+        image.paste(image, (0, 0))
+        draw.text((10, top+5), my_text, font=font, fill=(255, 255, 255))
+
 
 class Fridgely:
     def __init__(self, model_name="qwen2.5:0.5b-instruct", ollama_url="http://localhost:11434"):
@@ -116,6 +166,7 @@ class Fridgely:
         
         if self.tts_engine:
             try:
+                self.tts_engine.stop()   # Stop any leftover speech
                 self.tts_engine.say(clean_text)
                 self.tts_engine.runAndWait()
             except Exception as e:
@@ -180,29 +231,33 @@ class Fridgely:
         except Exception as e:
             return f"Error communicating with Ollama: {e}"
 
-    def touch_pads(self, items):
+    def touch_pads(self, items, typed_response):
         i2c = busio.I2C(board.SCL, board.SDA)
         mpr121 = adafruit_mpr121.MPR121(i2c)
         
         self.speak("Touch the pads to add items. Touch pad 11 when you are finished.")
         items = [0]*11
-        typed_response = ""
         while True:
             for i in range(11): 
                 if mpr121[i].value:
                     items[i] += 1
                     print(f"Pad {i} touched!")
+                    print(BLUE + f"Added one {items_names[i]}")
+                    filename = sanitize_filename(items[i]) + ".png"
+                    print(filename)
+                    # drawImages(filename, f"Added one {items_names[i]}")
                     self.speak(f"Added one {items_names[i]}")
                     time.sleep(0.5)
             if mpr121[11].value:  # Example: if pad 12 is touched, exit
                 print("Response:")
                 self.speak("Finished adding items.")
                 typed_response = "You want to buy "
+                print(typed_response)
                 for i in range(11):
+                    print(items[i])
                     if items[i] > 0:
                         typed_response += f"{items[i]} {items_names[i]}, "
                 break
-            print(typed_response)
             if typed_response:
                 print(typed_response)
                 self.speak(typed_response)
@@ -239,7 +294,9 @@ class Fridgely:
                     continue
 
                 if any(word in user_input for word in ['add', 'list', 'grocery', 'shopping', 'shop', 'buy', 'shopping list', 'add to shopping list', 'grocery list']):
-                    self.touch_pads(items_names)
+                    typed_response = ""
+
+                    self.touch_pads(items_names, typed_response)
                     continue
                 
                 if any(word in user_input for word in ['change favorites', 'change favorite', 'change item']):
