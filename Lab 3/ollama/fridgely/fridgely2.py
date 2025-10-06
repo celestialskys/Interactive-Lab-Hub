@@ -104,7 +104,9 @@ def drawImages(image_path, my_text):
     dr.text((10, 10), my_text, font=font, fill=(255, 255, 255))
      # Display image.
     disp.image(img, rotation)
-
+    
+i2c = busio.I2C(board.SCL, board.SDA)
+mpr121 = adafruit_mpr121.MPR121(i2c)
 class Fridgely:
     def __init__(self, model_name="qwen2.5:0.5b-instruct", ollama_url="http://localhost:11434"):
         self.model_name = model_name
@@ -238,9 +240,7 @@ class Fridgely:
         except Exception as e:
             return f"Error communicating with Ollama: {e}"
 
-    def touch_pads(self, items, typed_response = ""):
-        i2c = busio.I2C(board.SCL, board.SDA)
-        mpr121 = adafruit_mpr121.MPR121(i2c)
+    def add_items_touch_pads(self, items, typed_response = ""):
         
         self.speak("Touch the pads to add items. Touch pad 11 when you are finished.")
         items = [0]*11
@@ -267,6 +267,39 @@ class Fridgely:
         if typed_response != "":
             self.speak(typed_response)
      
+    def change_items_touch_pads(self, items):
+        self.speak("Touch the pads to change item.")
+        items = [0]*11
+        while True:
+            for i in range(11): 
+                if mpr121[i].value:
+                    items[i] += 1
+                    print(f"Pad {i} touched!")
+                    self.speak("What item would you like to change it to?")
+                    time.sleep(0.3)
+
+                    # listen again just for this answer
+                    spoken_phrase = self.listen()
+                    while not spoken_phrase and not mpr121[11].value:
+                        self.speak("I didn't catch that. Say the item name or hit 11 to quit.")
+                        spoken_phrase = self.listen()
+                    if spoken_phrase:
+                        print(BLUE + f"Change {items_names[i]}")
+                        self.speak("I will change " + items_names[i] + "to" + spoken_phrase)
+                        previous_item = items_names[i]
+                        items_names[i] = spoken_phrase
+                        get_food_image(spoken_phrase)
+                        filename = get_food_path(items_names[i])
+                        if filename is not None:
+                            print(filename)
+                            drawImages(filename, items_names[i])
+                        self.speak( previous_item + " is now " + items_names[i])
+                        print(items_names[i])
+                        time.sleep(0.5)
+                    if mpr121[11].value:  # exit if pad 11 is touched
+                        self.speak("exiting.")
+                        return
+              
     def run_conversation(self, touched = False, button_item = ""):
         """Main conversation loop"""
         print("Fridgely started!")
@@ -299,11 +332,11 @@ class Fridgely:
                     continue
 
                 if any(word in user_input for word in ['add', 'list', 'grocery', 'shopping', 'shop', 'buy', 'shopping list', 'add to shopping list', 'grocery list']):
-                    self.touch_pads(items_names, typed_response = "")
+                    self.add_items_touch_pads(items_names, typed_response = "")
                     continue
                 
-                if any(word in user_input for word in ['change favorites', 'change favorite', 'change item']):
-                    self.speak("What item would you like to change?")
+                if any(word in user_input for word in ['change favorites', 'change favorite', 'change item'. '']):
+                    self.change_items_touch_pads(items_names)  # note: method on self
                     continue
 
                 
