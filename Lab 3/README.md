@@ -1,5 +1,6 @@
 # Chatterboxes
 **NAMES OF COLLABORATORS HERE**
+
 Nana Takada (nt388)
 
 <details>
@@ -218,6 +219,7 @@ answer = ask_ai("How should I greet users?")
 
 \*\***Try creating a simple voice interaction that combines speech recognition, Ollama processing, and text-to-speech output. Document what you built and how users responded to it.**\*\*
 
+
 ### Serving Pages
 
 In Lab 1, we served a webpage with flask. In this lab, you may find it useful to serve a webpage for the controller on a remote device. Here is a simple example of a webserver.
@@ -311,13 +313,14 @@ Answer the following:
 
 \*\**your answer here*\*\*
 
+
 </details>
 
 ## Part1
 
 \*\***Write your own shell file to use your favorite of these TTS engines to have your Pi greet you by name.**\*\*
 
-[My own shell file](speech-scripts/Bisch_Greeting.sh)
+[My own shell file](speech-scripts/nana_demo.sh)
 
 \*\***Write your own shell file that verbally asks for a numerical based input (such as a phone number, zipcode, number of pets, etc) and records the answer the respondent provides.**\*\*
 
@@ -329,14 +332,105 @@ I wrote code that only used the shell commands on the .sh file, but I modified t
 This will ask the phone number, and once there are 10 digits, it will stop listening, and repeating what it heard. 
 The phone number will be stored in the phone.txt.
 
+\*\***Try creating a simple voice interaction that combines speech recognition, Ollama processing, and text-to-speech output. Document what you built and how users responded to it.**\*\*
+
+We made a reservation bot.
+We modifid the prompt to 
+```bash
+"""You are a restaurant reservation assistant.
+
+            Goals:
+            - If the user wants to MAKE a reservation: ask (in order) 1) date, 2) time, 3) number of people, 4) any allergies or dietary restrictions.
+            - If the user wants to CANCEL a reservation: ask for the name on the booking and the date.
+            - If the user wants to CHANGE a reservation: ask what they want to change (date, time, party size, allergies, or name), then gather only the needed details.
+
+            Interaction rules:
+            - Ask ONE question at a time. Keep questions short and clear.
+            - Confirm ambiguous info instead of guessing.
+            - If the user switches intent (make/cancel/change), follow the new path.
+            - At the end, summarize all collected details and ask for a final yes/no confirmation.
+            - If the user chats about non-booking topics, respond briefly and steer back to the task.
+
+            Output format:
+            - Use concise, friendly sentences.
+            - For the final summary, present bullet points.
+```
+       
+The conversation was like
+
+```bash
+Assistant: Hello! Would you like to make, change, or cancel a reservation today?
+Could not understand audio
+You said: reservation
+User: reservation
+Assistant: Sure! Let's start with your reservation. How can I assist you?
+Listening...
+Recognizing...
+You said: I want to make a reservation
+User: i want to make a reservation
+Thinking...
+Assistant: Sure! Please tell me on which date, time, number of people, any allergies or dietary restrictions, and name you'd like to make a reservation.
+You said: October 3rd 7:00 p.m. three people
+User: october 3rd 7:00 p.m. three people
+Assistant: Sure! How can I help you today? Do you have a specific date and time or would you like to change anything?
+You said: I don't want to make any change just I want to make a reservation on October 3rd 7:00 p.m. three people
+User: i don't want to make any change just i want to make a reservation on october 3rd 7:00 p.m. three people
+Assistant: - Date: October 3, 2023  
+- Time: 7:00 PM  
+- Number of People: Three  
+- Any Allergies or Dietary Restrictions: None  
+
+Is there anything else you would like to add for your reservation? If so, please let me know!
+You said: no goodbyes
+User: no goodbyes
+Assistant: Goodbye! Have a great day!
+```
+One challenge we faced was that Ollama tended to ignore the instruction to ask only one question at a time. Instead of breaking the flow into separate turns (e.g., asking first about the date, then the time, then the number of people), it often combined them into a single prompt.
+
+We also found that simple answers like “date, time, and number of people” were not sufficient for the model. To work properly, the user’s input had to be phrased in full sentences such as “I want to make a reservation on Friday at 7pm for four people.” This made the interaction less natural and showed that the prompt design needed more refinement to guide Ollama step by step.
+
+We changed the prompt to be simpler.
+
+```bash
+    system_prompt = """You are a restaurant reservation assistant.
+        Rules:  
+        - Always ask exactly ONE question per turn.  
+        - Do not combine multiple questions.  
+        - Wait for the user’s response before moving to the next detail.  
+        - The required details for making a reservation are: date → time → number of people → allergies.  
+        - If the user only gives a short answer (like “Friday”), expand it into a full confirmation: e.g., say “Okay, I’ll note Friday. What time on Friday?”  
+        - Rephrase partial answers into full sentences internally, but only ask the next question out loud.  
+        - At the end, summarize the details clearly in bullet points and ask for confirmation.  
+        - If the year was not provided, assume it is the 2025.
+    """
+```
+
+Since the current conversation did not include the conversation history, we added the converstion history in the prompt. 
+
+```bash
+Assistant: Hello! Would you like to make reservation today?
+User: yes please
+Assistant: What date would you prefer? Please indicate the day of the month and year.```
+User: 2020 fifths october 8th
+Assistant: Okay, Ill note Friday. What time on Friday?
+User: 7:00 p.m.
+Assistant: - Date: Friday, October 8, 2020
+- Time: 7:00 p.m.
+Please provide the number of people for this reservation and their allergies if any.
+User: three people and there's no
+```
+
+* [Test](ollama/ollama_test.py)
+
 
 \*\***Post your storyboard and diagram here.**\*\*
 
 <img src="image/diagram.jpg" height="400" />
-<img src="image/storyboard_fridge.jpg" height="400">
-<img src="image/storyboard_fridge2.jpg" height="400">
+<img src="image/storyboard_fridge01.jpg" height="400">
+<img src="image/storyboard_fridge02.jpg" height="400">
 
 Graph of possible dialogues:
+
 <img src="image/Fridgely-graph.png" height="400">
 
 \*\***Please describe and document your process.**\*\*
@@ -350,3 +444,83 @@ Find a partner, and *without sharing the script with your partner* try out the d
 [Video](https://drive.google.com/file/d/1Ygd8ufaxSdl0j79uujBPMpG46CjaomNH/view?usp=drive_link)
 
 The dialogue was generally straightforward. In the second conversation, there was a slight overlap when the fridge attempted to make a suggestion. This felt fairly realistic, as interactions with smart devices often involve brief pauses that can lead to unintentional interruptions. People sometimes add follow-up thoughts after a moment of silence, which smart devices may interpret as the end of a statement, prompting them to respond prematurely.
+
+## Part2
+
+Building on the smart fridge concept, we took inspiration from the Amazon Dash button and used the Adafruit MPR121 12-Key Capacitive Touch Sensor (STEMMA QT / Qwiic) to simulate a shopping cart.
+In our envisioned system, users could assign their top-ordered items to each touchpad and simply press a button to add them to a wish list.
+
+We tested this prototype with two users — my sister and her husband.
+
+How to run the code. 
+```bash 
+cd fridgely
+
+#If you do not have venv ready 
+python3 -m venv fridgely_venv
+
+source fridgely_venv/bin/activate
+
+pip install -r requirements.txt
+
+#Make sure I2C is enabled
+sudo raspi-config
+#Go to Interface Options → I2C → Enable.
+
+#install i2c-tools
+sudo apt-get install -y i2c-tools
+
+#try this. and you are supposed to see a5.
+i2cdetect -y 1
+
+python3 fridgely.py 2> alsa.log
+
+#You can also test whether the sensor is working or not by running 
+python3 test_condition.py 
+```
+
+### Video 
+[Video](https://drive.google.com/file/d/1y6u7ZUspF8cZDlv49KX7V6TnU6PQt2wZ/view?usp=drive_link)
+
+[Video](https://drive.google.com/file/d/1_LhfOJKmJTM6E9kmma_JgTcQN1gu8ZxT/view?usp=drive_link)
+
+
+### What worked well about the system and what didn't?
+Once I explained the system, users understood how it worked and used the touch buttons to add items. However, they were confused about why a touch sensor was necessary when they could simply use voice commands.
+
+We then tested a voice-only version, where they said phrases like “add one tomato” or “add one asparagus.” The main issue was speech-to-text errors, when recognition failed, my follow-up question (“One asparagus?”) frustrated them.
+
+On Lianne's system the speech was not very clear even after troubleshooting. It seemed the system had problems with the voice files but did speak the dialogue, though choppy. 
+We faced problems regarding mic input versus bluetooth output where the pi tried to use only one of the devices. Eventually we explicitly told the pi which input to use for the mic. Another small hiccup was making sure the images were comming in correctly. When an image was not available we added a generic picture of food.
+
+Overall, they appreciated the speed of adding items but found it cognitively demanding to remember which button corresponded to which item. They also wished the system displayed a visual confirmation of newly added items, rather than only relying on audio feedback. Users liked the ability to see the items being added to the list and change the items as customization.
+
+### What worked well about the controller and what didn't?
+
+The controller ran smoothly. It converted speech to text, displayed the recognized text, and read out my typed response. However, the process was sometimes slow, and the text wasn’t always accurate.
+Since I could still hear what they said, I was able to respond correctly, but this wouldn’t be possible in a fully autonomous version.
+
+
+As a Wizard-of-Oz (WoZ) controller, it was sometimes challenging to decide how to respond in real time, given the variability of user input.
+
+### What lessons can you take away from the WoZ interactions for designing a more autonomous version of the system?
+
+The WoZ setup was extremely valuable for observing user reactions and pain points before full automation.
+We learned that repeated clarification (due to recognition errors) quickly annoys users, and even with a short introduction, they were initially confused about button-item mappings.
+However, allowing them to interact hands-on helped them understand the system and suggest improvements.
+
+When we built a smart reservation bot for Ollama, we found that tuning prompts to achieve desired behavior was difficult. In contrast, the WoZ approach highlighted user-experience issues (rather than technical ones) and allowed quick prototyping and testing, such as comparing touch-based vs. voice-only versions — without coding every variation.
+
+
+### How could you use your system to create a dataset of interaction? What other sensing modalities would make sense to capture?
+
+The system could generate valuable datasets on ordering frequency, item preferences, and time patterns, enabling personalized recommendations or automated restocking suggestions.
+
+Additional sensing modalities that could enhance a future smart fridge include:
+- Internal temperature sensors — detect door status and food safety.
+- Environmental sensors — adjust recipe or item recommendations based on weather.
+- Facial or voice recognition — identify who’s interacting to personalize dialogue and reference previous interactions (e.g., tracking household members’ preferences).
+- Food recognition / freshness detection — monitor inventory and suggest which items to use first.
+
+We used ChatGPT to clean up the sentences, but all the ideas are ours. 
+Prompt: can you clean up
