@@ -107,13 +107,20 @@ def drawImages(image_path, my_text):
     
 i2c = busio.I2C(board.SCL, board.SDA)
 mpr121 = adafruit_mpr121.MPR121(i2c)
+def pick_mic_index(name_hint="USB"):
+    names = sr.Microphone.list_microphone_names()
+    for i, nm in enumerate(names):
+        if name_hint.lower() in nm.lower():
+            return i
+    return 0  # fallback to first device
+
 class Fridgely:
     def __init__(self, model_name="qwen2.5:0.5b-instruct", ollama_url="http://localhost:11434"):
         self.model_name = model_name
         self.ollama_url = ollama_url
         self.recognizer = sr.Recognizer()
-        self.microphone = sr.Microphone()
-        
+        self._mic_index = pick_mic_index("USB")  # or substring of your mic's name
+        self.microphone = sr.Microphone(device_index=self._mic_index)
         # Initialize TTS
         # if TTS_ENGINE == 'pyttsx3':
         #     self.tts_engine = pyttsx3.init()
@@ -145,6 +152,8 @@ class Fridgely:
         with self.microphone as source:
             self.recognizer.adjust_for_ambient_noise(source)
         print("Ready for conversation!")
+
+    
 
     def test_ollama_connection(self):
         """Test if Ollama is running and the model is available"""
@@ -275,7 +284,7 @@ class Fridgely:
                 if mpr121[i].value:
                     items[i] += 1
                     print(f"Pad {i} touched!")
-                    self.speak("What item would you like to change it to?")
+                    self.speak("What item would you like to change " + items_names[i] + " to?")
                     time.sleep(0.3)
 
                     # listen again just for this answer
@@ -285,11 +294,12 @@ class Fridgely:
                         spoken_phrase = self.listen()
                     if spoken_phrase:
                         print(BLUE + f"Change {items_names[i]}")
-                        self.speak("I will change " + items_names[i] + "to" + spoken_phrase)
+                        self.speak("I will change " + items_names[i] + " to " + spoken_phrase)
                         previous_item = items_names[i]
                         items_names[i] = spoken_phrase
                         get_food_image(spoken_phrase)
                         filename = get_food_path(items_names[i])
+                        time.sleep(0.5)
                         if filename is not None:
                             print(filename)
                             drawImages(filename, items_names[i])
@@ -335,8 +345,8 @@ class Fridgely:
                     self.add_items_touch_pads(items_names, typed_response = "")
                     continue
                 
-                if any(word in user_input for word in ['change favorites', 'change favorite', 'change item'. '']):
-                    self.change_items_touch_pads(items_names)  # note: method on self
+                if any(word in user_input for word in ['change favorites', 'change favorite', 'change item', 'change items', 'edit favorite', 'edit favorites']):
+                    self.change_items_touch_pads(items_names)
                     continue
 
                 
