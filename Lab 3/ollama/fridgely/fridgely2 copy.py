@@ -90,7 +90,10 @@ sys.stderr = sys.__stderr__
 RED = "\033[91m"
 BLUE = "\033[94m"
 RESET = "\033[0m"
-items_names = ["Tomato", "Eggplant","spinach", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter", "chocolate"]
+i2c = busio.I2C(board.SCL, board.SDA)
+mpr121 = adafruit_mpr121.MPR121(i2c)
+        
+items_names = ["Tomato", "Eggplant","spinach", "cabbage", "asparagus", "Milk", "Eggs", "Cheese", "Yogurt", "Butter"]
 
 def drawImages(image_path, my_text):
     # Load and fit the image to the display size
@@ -102,6 +105,7 @@ def drawImages(image_path, my_text):
     dr = ImageDraw.Draw(img)
     dr.rectangle((0, 0, width, 28), fill=(0, 0, 0))
     dr.text((10, 10), my_text, font=font, fill=(255, 255, 255))
+    drawText(my_text)
      # Display image.
     disp.image(img, rotation)
 
@@ -238,9 +242,7 @@ class Fridgely:
         except Exception as e:
             return f"Error communicating with Ollama: {e}"
 
-    def touch_pads(self, items, typed_response = ""):
-        i2c = busio.I2C(board.SCL, board.SDA)
-        mpr121 = adafruit_mpr121.MPR121(i2c)
+    def add_items_touch_pads(self, items, typed_response):
         
         self.speak("Touch the pads to add items. Touch pad 11 when you are finished.")
         items = [0]*11
@@ -249,7 +251,6 @@ class Fridgely:
                 if mpr121[i].value:
                     items[i] += 1
                     print(f"Pad {i} touched!")
-                    print(items_names[i])
                     print(BLUE + f"Added one {items_names[i]}")
                     filename = get_food_path(items_names[i])
                     print(filename)
@@ -260,13 +261,52 @@ class Fridgely:
                 print("Response:")
                 self.speak("Finished adding items.")
                 typed_response = "You want to buy "
+                print(typed_response)
                 for i in range(11):
+                    print(items[i])
                     if items[i] > 0:
                         typed_response += f"{items[i]} {items_names[i]}, "
                 break
-        if typed_response != "":
-            self.speak(typed_response)
+            if typed_response:
+                print(typed_response)
+                self.speak(typed_response)
      
+     
+      def change_items_touch_pads(self, items, spoken_phrase):
+        self.speak("Touch the pads to change item.")
+        items = [0]*11
+        while True:
+            for i in range(11): 
+                if mpr121[i].value:
+                    items[i] += 1
+                    print(f"Pad {i} touched!")
+                    print(BLUE + f"Change {items_names[i]}")
+                    self.speak("I will change " + items_names[i] + "to" + spoken_phrase)
+                    previous_item = items_names[i]
+                    items_names[i] = spoken_phrase
+                    get_food_image(spoken_phrase)
+                    filename = get_food_path(items_names[i])
+                    if filename is not None:
+                        print(filename)
+                        drawImages(filename, items_names[i])
+                    self.speak( previous_item + "is now" + items_names[i])
+                    print(items_names[i])
+                    time.sleep(0.5)
+            # if mpr121[11].value:  # Example: if pad 12 is touched, exit
+            #     print("Response:")
+            #     self.speak("Finished adding items.")
+            #     typed_response = "You want to buy "
+            #     print(typed_response)
+            #     for i in range(11):
+            #         print(items[i])
+            #         if items[i] > 0:
+            #             typed_response += f"{items[i]} {items_names[i]}, "
+            #     break
+            # if typed_response:
+            #     print(typed_response)
+            #     self.speak(typed_response)
+     
+   
     def run_conversation(self, touched = False, button_item = ""):
         """Main conversation loop"""
         print("Fridgely started!")
@@ -299,18 +339,23 @@ class Fridgely:
                     continue
 
                 if any(word in user_input for word in ['add', 'list', 'grocery', 'shopping', 'shop', 'buy', 'shopping list', 'add to shopping list', 'grocery list']):
-                    self.touch_pads(items_names, typed_response = "")
-                    continue
-                
-                if any(word in user_input for word in ['change favorites', 'change favorite', 'change item']):
-                    self.speak("What item would you like to change?")
-                    continue
+                    typed_response = ""
 
+                    self.add_items_touch_pads(items_names, typed_response)
+                    continue
                 
-                # if touched:
-                    # run_shopping_list_conversation(self, button_item)
-                    # touched = False
-                    # button_number = -1
+                if any(word in user_input for word in ['change favorites', 'change favorite', 'change item', 'change', 'modify', 'update,' 'favorites', 'favorite']):
+                    self.speak("What item would you like to change?")
+                    time.sleep(0.3)
+
+                    # listen again just for this answer
+                    item = self.listen(timeout=6, phrase_time_limit=4)
+                    if not item:
+                        self.speak("I didn't catch that. Say the item name.")
+                        continue
+
+                    self.change_items_touch_pads(items_names, item)  # note: method on self
+                    continue
                 
                 # Send to Ollama for processing
                 print("Thinking...", flush=True)
@@ -325,7 +370,7 @@ class Fridgely:
             except Exception as e:
                 print(f"Unexpected error: {e}")
                 self.speak("Sorry, I encountered an error. Let's try again.")
-    
+
 def start_voice_assistant():
     """Main function to run the voice assistant"""
     import argparse
@@ -351,9 +396,6 @@ def start_voice_assistant():
         assistant.run_conversation()
     except Exception as e:
         print(f"Failed to start assistant: {e}")
-
-# if __name__ == "__main__":
-#     main()
 
 
 import os, glob
