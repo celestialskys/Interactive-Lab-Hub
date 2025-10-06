@@ -102,7 +102,6 @@ def drawImages(image_path, my_text):
     dr = ImageDraw.Draw(img)
     dr.rectangle((0, 0, width, 28), fill=(0, 0, 0))
     dr.text((10, 10), my_text, font=font, fill=(255, 255, 255))
-    drawText(my_text)
      # Display image.
     disp.image(img, rotation)
 
@@ -259,10 +258,7 @@ class Fridgely:
             if mpr121[11].value:  # Example: if pad 12 is touched, exit
                 print("Response:")
                 self.speak("Finished adding items.")
-                typed_response = "You want to buy "
-                print(typed_response)
                 for i in range(11):
-                    print(items[i])
                     if items[i] > 0:
                         typed_response += f"{items[i]} {items_names[i]}, "
                 break
@@ -331,27 +327,6 @@ class Fridgely:
                 print(f"Unexpected error: {e}")
                 self.speak("Sorry, I encountered an error. Let's try again.")
     
-    # def run_shopping_list_conversation(self, item):
-    #     selected_item = None
-    #     quantity = None
-        
-    #     """Run a conversation focused on adding items to the shopping list"""
-    #     self.speak("You've chosen " + button_item + ". How many would you like to add to your shopping list?")
-        
-    #     try:
-    #         quantity = int(user_input)
-    #     except ValueError:
-    #         # If not a clean int, ask Ollama to extract a number
-    #         system_prompt_qty = "Extract a number from the user response. If no number, return -1."
-    #         quantity = int(self.query_ollama(user_input, system_prompt_qty))
-
-    #     if quantity > 0:
-    #         self.speak(f"Okay, adding {quantity} {selected_item}(s) to your shopping list.")
-    #         # Add to shopping list logic here
-    #         shopping_list.append((selected_item, quantity))
-    #     else:
-    #         self.speak("Sorry, I didn't catch the quantity. Please say a number.")
- 
 def start_voice_assistant():
     """Main function to run the voice assistant"""
     import argparse
