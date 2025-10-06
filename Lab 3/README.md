@@ -525,5 +525,7 @@ Additional sensing modalities that could enhance a future smart fridge include:
 
 We used ChatGPT to clean up the sentences, but all the ideas are ours.
 Prompt: can you clean up
+
 We also asked ChatGPT to help us use wikipedia for images
 Prompt: Can you help me create a script to retrieve and save food images from wikipedia please
+
