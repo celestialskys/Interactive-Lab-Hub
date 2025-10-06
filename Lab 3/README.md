@@ -491,7 +491,7 @@ Once I explained the system, users understood how it worked and used the touch b
 We then tested a voice-only version, where they said phrases like “add one tomato” or “add one asparagus.” The main issue was speech-to-text errors, when recognition failed, my follow-up question (“One asparagus?”) frustrated them.
 
 On Lianne's system the speech was not very clear even after troubleshooting. It seemed the system had problems with the voice files but did speak the dialogue, though choppy. 
-We faced problems regarding mic input versus bluetooth output where the pi tried to use only one of the devices. Eventually we explicitly told the pi which input to use for the mic. Another small hiccup was making sure the images were comming in correctly. When an image was not available we added a generic picture of food.
+We faced problems regarding mic input versus bluetooth output where the pi tried to use only one of the devices. Eventually we explicitly told the pi which input to use for the mic. We asked Chatgpt to assist in querying wikipedia for images and we had to make some tweaks to the code in order to  make sure the images were comming in correctly. When an image was not available we added a generic picture of food.
 
 Overall, they appreciated the speed of adding items but found it cognitively demanding to remember which button corresponded to which item. They also wished the system displayed a visual confirmation of newly added items, rather than only relying on audio feedback. Users liked the ability to see the items being added to the list and change the items as customization.
 
