@@ -1,6 +1,6 @@
 from typing import Tuple, List, Dict
 import colorsys
-
+#Asked ChatGPT to help me to create a class that can do color matching and conversions.
 class ColorMatcher:
     RGB = Tuple[int, int, int]
     RGBA = Tuple[int, int, int, float]

@@ -1,4 +1,4 @@
-#Asked ChatGPT to help me to get an API for color names to hex and rgb values. It found this one:
+#Asked ChatGPT to help me query API for color names to hex and rgb values.
 import requests
 from typing import TypedDict, Optional, List, Dict, Any
 
@@ -23,8 +23,8 @@ class RGBColor(TypedDict):
 def get_name_by_rgba(rgba_values: List[RGBColor]):
     """Query Color Pizza API using RGBA values."""
     for color in rgba_values:
-        if len(color) != 4:
-            raise ValueError("RGBA values must be 4 elements")
+        if len(color) < 3:
+            raise ValueError("RGBA values must be at least 3 elements")
         else:
             r, g, b, a = color["r"], color["g"], color["b"], color.get("a", 1.0)
             if not (0 <= r <= 255 and 0 <= g <= 255 and 0 <= b <= 255 and 0.0 <= a <= 1.0):
