@@ -25,14 +25,13 @@ def getColors():
     if apds.color_data_ready:
         # get the data and print the different channels
         r, g, b, c = apds.color_data
-        # print("red: ", r)
-        # print("green: ", g)
-        # print("blue: ", b)
-        # print("clear: ", c)
-
-        # print("color temp {}".format(colorutility.calculate_color_temperature(r, g, b)))
-        # print("light lux {}".format(colorutility.calculate_lux(r, g, b)))
-        my_color_data = {rgba: {r: r, g: g, b: b, a: c}, "color_temp": colorutility.calculate_color_temperature(r, g, b), "light_lux": colorutility.calculate_lux(r, g, b)}
+        r_norm = (r / c) * 255
+        g_norm = (g / c) * 255
+        b_norm = (b / c) * 255
+        
+        a = c / 65535.0 #asked ChatGPT to help me create an alpha value from clear channel
+       
+        my_color_data = {"rgba_values": {"r": r_norm, "g": g_norm, "b": b_norm, "a": a}, "color_temp": colorutility.calculate_color_temperature(r, g, b), "light_lux": colorutility.calculate_lux(r, g, b)}
     return(my_color_data)
 
 def main():
@@ -42,9 +41,10 @@ def main():
         b_pressed = (buttonB.value == False)
         if a_pressed:
             print("Checking your outfit")
-            color = getColors()
-            print(color["rgba"])
-            match = color_api.get_name_by_rgba(color["rgba"])
+            items.append(getColors())
+            # print(items[-1:][0]["rgba_values"])
+            # print(color["rgba_values"])
+            match = color_api.get_name_by_rgba(items[-1:][0]["rgba_values"])
             # print(f"Your outfit is {match['name']} with hex {match['hex']}")
             time.sleep(1)
         if b_pressed:

@@ -11,28 +11,28 @@ class ColorNameAPIError(Exception):
 
 def rgba_to_hex(rgba):
     r, g, b, _a = rgba
-    return f"{r:02x}{g:02x}{b:02x}"
+    hex_color = "{:02X}{:02X}{:02X}".format(int(r), int(g), int(b))
+    return hex_color
 
 
 class RGBColor(TypedDict):
     r: int
     g: int
     b: int
-    a: Optional[float]  # optional alpha (0.0–1.0)
     
-def get_name_by_rgba(rgba_values: List[RGBColor]):
+def get_name_by_rgba(rgb_value: RGBColor):
     """Query Color Pizza API using RGBA values."""
-    for color in rgba_values:
-        if len(color) < 3:
-            raise ValueError("RGBA values must be at least 3 elements")
+    print(rgb_value)
+    if len(rgb_value) < 3:
+        raise ValueError("RGBA values must be at least 3 elements")
+    else:
+        r, g, b, a = rgb_value["r"], rgb_value["g"], rgb_value["b"], rgb_value.get("a", 1.0)
+        if not (0 <= r <= 255 and 0 <= g <= 255 and 0 <= b <= 255 and 0.0 <= a <= 1.0):
+            raise ValueError("RGBA values out of range")
         else:
-            r, g, b, a = color["r"], color["g"], color["b"], color.get("a", 1.0)
-            if not (0 <= r <= 255 and 0 <= g <= 255 and 0 <= b <= 255 and 0.0 <= a <= 1.0):
-                raise ValueError("RGBA values out of range")
-            else:
-                hex_val = rgba_to_hex([r, g, b, a])
-                print(f"Looking up color for RGBA({r}, {g}, {b}, {a}) -> {hex_val}")
-                return pretty_names_by_hex(hex_val)
+            hex_val = rgba_to_hex([r, g, b, a])
+            print(f"Looking up color for RGBA({r}, {g}, {b}, {a}) -> {hex_val}")
+            return pretty_names_by_hex(hex_val)
     
 
 def get_names_by_hex(
@@ -95,11 +95,11 @@ def pretty_names_by_hex(*hexes: str, **kwargs) -> None:
     import json
     print(json.dumps(data, indent=2))
 
-def main():
-    # simple demo
-    print("Name(s) for 'r': 255, 'g': 0, 'b': 0:")
-    color = {'r': 255, 'g': 0, 'b': 0, 'a': 1.0}
-    get_name_by_rgba([color])
+# def main():
+#     # simple demo
+#     print("Name(s) for 'r': 255, 'g': 144, 'b': 0:")
+#     color = {'r': 255, 'g': 144, 'b': 0, 'a': 1.0}
+#     get_name_by_rgba(color)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
