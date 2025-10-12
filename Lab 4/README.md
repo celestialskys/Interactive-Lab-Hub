@@ -20,22 +20,26 @@
 ### Part 1 (Week 1)
 **Submit the following for Part 1:**  
 *️⃣ **A. Capacitive Sensing**
-	<details>
-		<summary>
-			- Photos/videos of your Twizzler (or other object) capacitive sensor setup
-			- Code and terminal output showing touch detection
-		<summary>
-	<details>
-	[Paper Leaf Sensor Video](https://drive.google.com/file/d/18yES5zgi9vadJ35WmzPh92G5otRxhHDW/view?usp=sharing)
+<details>
+	<summary>
+		- Photos/videos of your Twizzler (or other object) capacitive sensor setup
+		- Code and terminal output showing touch detection
+	<summary>
+<details>
+[Paper Leaf Sensor Video](https://drive.google.com/file/d/18yES5zgi9vadJ35WmzPh92G5otRxhHDW/view?usp=sharing)
 
 *️⃣ **B. More Sensors**
+<details>
+	<summary> Instructions</summary>
 	- Photos/videos of each sensor tested (light/proximity, rotary encoder, joystick, distance sensor)
 	- Code and terminal output showing touch detection
+</details>
+	
 
-	[Proximity Video](https://drive.google.com/file/d/1nly-xRRw7lkPNoYq9m0ssxKG0KIIMCPE/view?usp=drive_link)
-	[Motion Video](https://drive.google.com/file/d/1kV9ytehZo7h0iTpj5iUL3qDl60VlzUWA/view?usp=drive_link)
-	[Color Video](https://drive.google.com/file/d/1nGoNoW5VqaMlu44S1YrABpeoOqZt3pnG/view?usp=sharing)
-	[Joystick Video](https://drive.google.com/file/d/1-eFuz5ohCwvVwxiNTdq3e_H6tSxvZnMg/view?usp=sharing)
+[Proximity Video](https://drive.google.com/file/d/1nly-xRRw7lkPNoYq9m0ssxKG0KIIMCPE/view?usp=drive_link)
+[Motion Video](https://drive.google.com/file/d/1kV9ytehZo7h0iTpj5iUL3qDl60VlzUWA/view?usp=drive_link)
+[Color Video](https://drive.google.com/file/d/1nGoNoW5VqaMlu44S1YrABpeoOqZt3pnG/view?usp=sharing)
+[Joystick Video](https://drive.google.com/file/d/1-eFuz5ohCwvVwxiNTdq3e_H6tSxvZnMg/view?usp=sharing)
 
 
 *️⃣ **C. Physical Sensing Design**
