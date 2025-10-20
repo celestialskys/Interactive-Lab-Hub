@@ -1,4 +1,4 @@
-#!/home/pi/Documents/Interactive-Lab-Hub/Lab 4/.venv/bin/python3
+#!/home/pi/Interactive-Lab-Hub/Lab 4/.venv/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2018-2024, Emmanuel Blot <emmanuel.blot@free.fr>
