@@ -788,6 +788,7 @@ Some users found the joystick slightly hard to tilt. One user with larger hands 
 ### F. Final Documentation
 
 [Video_of_demo](https://drive.google.com/file/d/1emJ2zIF4F7Sx4GhbfLyXz1QM-JCBCluI/view?usp=sharing)
+[Video_of_demo 2](https://drive.google.com/file/d/10IImIktT_0hoaUEwjL4Gq_JYpRLtyKwQ/view?usp=sharing)
 
 <!-- 
 Record
