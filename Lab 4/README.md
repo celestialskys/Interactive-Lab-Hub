@@ -1,7 +1,7 @@
 
 # Ph-UI!!!
 
-Partner: Nana Takada(nt388) 
+Partner: Nana Takada (nt388)
 
 <details>
 	<summary><strong>Instructions for Students (Click to Expand)</strong></summary>
@@ -580,6 +580,7 @@ To explore this, we’ll prototype boards at different scales and test them with
 <img src="image/controllersketch-a.jpg" height="400" />
 <img src="image/controllersketch-b.jpg" height="400" />
 
+
 **\*\*\*What are some things these sketches raise as questions? What do you need to physically prototype to understand how to anwer those questions?\*\*\***
 
 1. Where should the rotary encoder be placed?
@@ -610,6 +611,8 @@ By testing these variations, we can learn how grip, weight, and balance affect u
 **\*\*\*Pick one of these display designs to integrate into your prototype.\*\*\***
 
 We decided to proceed with **Idea 5.0**; however, we also modified a bit while we are building the physical prototype. 
+
+## D
 
 **\*\*\*Explain the rationale for the design.\*\*\*** (e.g. Does it need to be a certain size or form or need to be able to be seen from a certain distance?)
 
@@ -716,7 +719,7 @@ For Capacitive sensor, make sure each button is associated to the right number.
 
 #### System Sketch
 ---
-We mapped the input sensors to intuitive actions that mirror physical drawing experiences. The joystick enables directional drawing and control, while the rotary encoder adjusts brush size. Capacitive sensors serve as mode-switch buttons for tools like rectangle, ellipse, and eraser. The accelerometer allows for quick clearing gestures, and the color sensor continuously adapts the brush color to match the user’s environment.
+We mapped the input sensors to intuitive actions that mirror physical drawing experiences. The joystick enables directional drawing and control, while the rotary encoder adjusts brush size. Capacitive sensors serve as mode-switch buttons for tools like rectangle, ellipse, and eraser. The accelerometer allows for quick clearing gestures, and the color sensor continuously adapts the brush color to match the user’s environment
 
 <img src="image/system_1.png" height="300" />
 <img src="image/system_2.png" height="300" />
@@ -743,7 +746,7 @@ At first, we thought the color sensor would just be a fun add-on. But when we co
 If the color sensor were placed separately or awkwardly, this smooth, color-flow experience would be lost.
 
 2. Accelerometer + Color Sensor → Gesture-Based Actions
-By combining the accelerometer and color sensor, we created playful, embodied interactions. Tilting or shaking the board can clear or recolor the canvas, connecting physical motion with visual change. These gestures make the experience feel more natural and alive—much more intuitive than pressing a button. It also a familiar action to any of those who had used an etch-a-sketch.
+By combining the accelerometer and color sensor, we created playful, embodied interactions. Tilting or shaking the board can clear or recolor the canvas, connecting physical motion with visual change. These gestures make the experience feel more natural and alive—much more intuitive than pressing a button. It is also a familiar action to any of those who had used an etch-a-sketch.
 
 3. Effect of Physical Arrangement on User Experience
 The physical layout of each component plays a major role in how natural the interaction feels:
@@ -773,7 +776,7 @@ Users found it difficult to tell which color was being detected. Even after an e
 
 One user wanted the option to save favorite colors, while another enjoyed the spontaneous, constantly changing colors. This raised an interesting design question: should ColorCatcher allow users to store selected colors, or keep the experience immediate and dynamic?
 
-3. **Tilt-to-erase confusion**
+3. **Tilt-to-erasef confusion**
 
 One participant accidentally deleted their drawing while tilting the board to detect colors. They felt the erase gesture was too sensitive and wanted a more intentional action — such as a confirmation step or a separate erase button.
 
@@ -788,6 +791,7 @@ Some users found the joystick slightly hard to tilt. One user with larger hands 
 ### F. Final Documentation
 
 [Video_of_demo](https://drive.google.com/file/d/1emJ2zIF4F7Sx4GhbfLyXz1QM-JCBCluI/view?usp=sharing)
+
 [Video_of_demo 2](https://drive.google.com/file/d/10IImIktT_0hoaUEwjL4Gq_JYpRLtyKwQ/view?usp=sharing)
 
 <!-- 
